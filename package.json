@@ -1,6 +1,6 @@
 {
   "name": "graph-api-webhooks-samples",
-  "version": "0.1.0",
+  "version": "0.12.7",
   "description": "Graph API Webhooks Sample",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fbsamples/graph-api-webhooks-samples"
+    "url": "https://github.com/ravi7mech/graph-api-webhooks-samples"
   },
   "keywords": [
     "node",
