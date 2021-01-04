@@ -10,25 +10,15 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 var xhub = require('express-x-hub');
-var WebSocket = require('ws');
-
-var wss = new WebSocket.Server({
-  port: 8999
-});
-
-
-wss.on('connection', function connection(ws) {
-  ws.send('Connected!');
-});
-
-var token = process.env.TOKEN || 'token';
-var received_updates = [];
 
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'));
+
 app.use(xhub({ algorithm: 'sha1', secret: process.env.APP_SECRET }));
 app.use(bodyParser.json());
 
+var token = process.env.TOKEN || 'token';
+var received_updates = [];
 
 app.get('/', function(req, res) {
   console.log(req);
@@ -58,7 +48,6 @@ app.post('/facebook', function(req, res) {
   console.log('request header X-Hub-Signature validated');
   // Process the Facebook updates here
   received_updates.unshift(req.body);
-  whenMessageIsReceived(req.body);
   res.sendStatus(200);
 });
 
@@ -69,14 +58,5 @@ app.post('/instagram', function(req, res) {
   received_updates.unshift(req.body);
   res.sendStatus(200);
 });
-
-
-function whenMessageIsReceived(data){
-  wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(data);
-      }
-    });
-}
 
 app.listen();
